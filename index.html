@@ -1,0 +1,528 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>نُقْلَة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a short hero with the road motif from the poster, then one working console that walks the seven journey stations, then the pitch pillars. */
+:root{
+  --bg:#F1F4EE; --surface:#FAFCF7; --ink:#1D3A2E; --muted:#587065;
+  --green:#2F5D4A; --on-green:#FFFFFF; --sage:#9DB39C; --sage-soft:#E2EADF;
+  --gold:#B58E4C; --line:#D3DCCF; --warn:#B2652F;
+  --display:'Aref Ruqaa','IBM Plex Sans Arabic',serif;
+  --body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+  --radius:18px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1B16; --surface:#16261F; --ink:#E7EFE9; --muted:#9BB1A4;
+    --green:#7FBA9C; --on-green:#0E1D16; --sage:#4B6A58; --sage-soft:#1E3228;
+    --gold:#D8B572; --line:#2A4136; --warn:#E39A66; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1B16; --surface:#16261F; --ink:#E7EFE9; --muted:#9BB1A4;
+  --green:#7FBA9C; --on-green:#0E1D16; --sage:#4B6A58; --sage-soft:#1E3228;
+  --gold:#D8B572; --line:#2A4136; --warn:#E39A66; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.75;padding-inline:clamp(16px,4vw,32px);padding-block:0 48px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1080px;margin-inline:auto}
+h1,h2,h3,p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:30px;color:var(--green);line-height:1}
+.badge{font-size:12px;letter-spacing:.02em;border:1px solid var(--line);border-radius:99px;padding:3px 12px;color:var(--muted);background:var(--surface)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding-block:12px 36px}
+.hero h1{font-family:var(--display);font-size:clamp(64px,13vw,128px);color:var(--green);line-height:1.05}
+.hero .tag{font-size:clamp(20px,3.4vw,28px);color:var(--gold);font-weight:600;margin-top:4px}
+.hero .lead{max-width:34em;color:var(--muted);margin-top:14px;font-size:17px}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:22px;background:var(--green);color:var(--on-green);border:0;border-radius:99px;padding:13px 26px;font-weight:600;font-size:17px;text-decoration:none}
+.cta:hover{filter:brightness(1.08)}
+.hero svg{width:100%;height:auto;max-width:100%;display:block}
+.road{stroke-dasharray:6 16;animation:flow 2.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-44}}
+@media (max-width:760px){.hero{grid-template-columns:1fr}.hero svg{max-width:360px;margin-inline:auto}}
+
+/* console */
+.console{background:var(--surface);border:1px solid var(--line);border-radius:26px;overflow:hidden}
+.console-head{padding:22px clamp(16px,3vw,28px) 6px}
+.console-head h2{font-size:clamp(22px,3.4vw,30px);font-weight:700}
+.console-head p{color:var(--muted);font-size:15px}
+.rail-box{overflow-x:auto;padding:14px clamp(12px,3vw,24px) 10px;scrollbar-width:thin}
+.rail{display:flex;gap:0;list-style:none;margin:0;padding:0;min-width:640px}
+.rail li{flex:1;position:relative;min-width:0}
+.rail li::before{content:"";position:absolute;top:19px;inset-inline:-50% 50%;height:3px;background:var(--line)}
+.rail li:first-child::before{display:none}
+.rail li.done::before,.rail li.active::before{background:var(--green)}
+.rail button{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;background:none;border:0;padding:0 2px;font-size:13px;color:var(--muted);line-height:1.35;text-align:center}
+.rail .dot{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--sage-soft);border:2px solid var(--line);font-weight:700;font-size:15px;color:var(--muted);position:relative;z-index:1;transition:.3s}
+.rail li.done .dot{background:var(--green);border-color:var(--green);color:var(--on-green)}
+.rail li.active .dot{background:var(--surface);border-color:var(--green);color:var(--green);box-shadow:0 0 0 5px var(--sage-soft)}
+.rail li.active button{color:var(--ink);font-weight:600}
+.stage{padding:10px clamp(16px,3vw,28px) 8px;min-height:420px;animation:rise .45s ease both}
+@keyframes rise{from{opacity:.0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stage-k{font-size:13px;color:var(--gold);font-weight:600;letter-spacing:.03em}
+.stage h3{font-size:clamp(21px,3vw,26px);margin-top:2px}
+.stage .sub{color:var(--muted);max-width:44em;margin-top:2px}
+.cols{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(16px,3vw,32px);margin-top:18px;align-items:start}
+.cols>*{min-width:0}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:16px clamp(16px,3vw,28px) 22px;border-top:1px solid var(--line);margin-top:18px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:10px 22px;font-weight:600}
+.btn.primary{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.btn:disabled{opacity:.35;cursor:default}
+.note{font-size:13px;color:var(--muted)}
+
+/* sliders */
+.field{margin-bottom:16px}
+.field-top{display:flex;justify-content:space-between;gap:8px;font-weight:500}
+.field-top b{color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);margin-top:6px}
+.seg{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.seg button,.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 16px;font-size:15px}
+.seg button[aria-pressed=true],.chip[aria-pressed=true]{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{text-align:start}
+
+/* gauge */
+.gauge-box{background:var(--sage-soft);border-radius:var(--radius);padding:20px;text-align:center}
+.gauge{width:min(220px,100%);height:auto}
+.gauge .trk{stroke:var(--line)}
+.gauge .val{stroke:var(--green);transition:stroke-dashoffset .8s cubic-bezier(.2,.7,.2,1),stroke .4s}
+.gauge text{fill:var(--ink)}
+.gauge-box .lv{font-weight:700;font-size:19px;margin-top:2px}
+.gauge-box p{font-size:14px;color:var(--muted)}
+
+/* generic cards */
+.card{background:var(--sage-soft);border-radius:var(--radius);padding:16px 18px}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.item{display:flex;gap:12px;align-items:flex-start;background:var(--sage-soft);border-radius:14px;padding:12px 14px}
+.item .ic{flex:none;width:34px;height:34px;border-radius:10px;background:var(--green);color:var(--on-green);display:grid;place-items:center}
+.item b{display:block;line-height:1.5}
+.item span.s{font-size:14px;color:var(--muted);line-height:1.55;display:block}
+.alert{border:1px solid var(--warn);border-radius:14px;padding:12px 14px;margin-top:12px;font-size:14.5px;color:var(--ink);background:transparent}
+.alert b{color:var(--warn)}
+.tr{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;font-size:14.5px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.tr:last-child{border:0}
+.tr .from{color:var(--muted)}
+.tr .to{font-weight:600;color:var(--green)}
+.tr .ar{color:var(--gold)}
+.radar{width:100%;max-width:300px;height:auto;display:block;margin-inline:auto}
+.radar text{fill:var(--muted);font-size:12px;font-family:var(--body)}
+.radar .web{fill:none;stroke:var(--line)}
+.radar .shape{fill:var(--green);fill-opacity:.22;stroke:var(--green);stroke-width:2.5;stroke-linejoin:round}
+.radar .pt{fill:var(--green)}
+
+/* courses */
+.seg-bar{display:flex;height:16px;border-radius:99px;overflow:hidden;gap:3px;margin-block:10px 4px}
+.seg-bar i{display:block;height:100%;background:var(--green);opacity:.85}
+.seg-bar i:nth-child(2n){background:var(--gold)}
+.seg-bar i:nth-child(3n){background:var(--sage)}
+.course{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.pill{font-size:12.5px;border-radius:99px;padding:2px 10px;background:var(--surface);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+
+/* jobs */
+.job{border:1.5px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:14px 16px;display:grid;gap:8px;text-align:start;width:100%;transition:.2s}
+.job[aria-pressed=true]{border-color:var(--green);box-shadow:0 0 0 4px var(--sage-soft)}
+.job-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.job-top b{font-size:17px;line-height:1.5}
+.job-top small{display:block;color:var(--muted);font-size:13px}
+.pct{font-size:24px;font-weight:700;color:var(--green);line-height:1}
+.bar{height:8px;border-radius:99px;background:var(--sage-soft);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tags .pill.hl{background:var(--sage-soft);color:var(--green);border-color:transparent;font-weight:500}
+.tags .pill.bad{color:var(--warn);border-color:var(--warn)}
+.jobs{display:grid;gap:12px;margin-top:16px}
+.jobs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:760px){.jobs-grid{grid-template-columns:1fr}}
+
+/* cv */
+.cv{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.cv h4{margin:0 0 2px;font-size:19px}
+.cv h5{margin:14px 0 4px;font-size:13px;color:var(--gold);letter-spacing:.04em}
+.cv ul{margin:0;padding-inline-start:18px;font-size:14.5px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.kpi{background:var(--sage-soft);border-radius:14px;padding:10px 12px;text-align:center}
+.kpi b{display:block;font-size:24px;color:var(--green);line-height:1.2}
+.kpi span{font-size:12.5px;color:var(--muted);line-height:1.4;display:block}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:11.5px;font-family:var(--body)}
+.chart .grid{stroke:var(--line)}
+.chart .ln{fill:none;stroke:var(--green);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.8s .2s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.chart .area{fill:var(--green);fill-opacity:.12}
+
+/* pitch */
+.pitch{margin-top:56px;display:grid;gap:40px}
+.pitch h2{font-size:clamp(22px,3.4vw,30px);margin-bottom:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.two>*{min-width:0}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.p-card{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:18px 20px}
+.p-card h3{font-size:19px;color:var(--green);margin-bottom:4px}
+.p-card p{color:var(--muted);font-size:15.5px}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.feat>*{min-width:0}
+@media (max-width:900px){.feat{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.feat{grid-template-columns:1fr}}
+.feat div{border-inline-start:3px solid var(--gold);padding:2px 14px}
+.feat b{display:block}
+.feat span{font-size:14.5px;color:var(--muted);line-height:1.6;display:block}
+.plain{list-style:none;padding:0;margin:0;display:grid;gap:8px;color:var(--muted);font-size:15.5px}
+.plain li{padding-inline-start:18px;position:relative}
+.plain li::before{content:"";position:absolute;inset-inline-start:0;top:.7em;width:8px;height:8px;border-radius:50%;background:var(--sage)}
+.close{text-align:center;padding:34px 16px;background:var(--green);color:var(--on-green);border-radius:26px}
+.close .brand{justify-content:center;color:inherit;font-size:44px}
+.close p{font-size:19px;margin-top:6px}
+.close small{display:block;opacity:.75;margin-top:10px;font-size:13px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.chart .ln{stroke-dashoffset:0}}
+</style>
+
+<div id="app" dir="rtl" lang="ar">
+<div class="wrap">
+
+<header class="top">
+  <div class="brand">
+    <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 33C8 17 18 7 34 6c0 16-9 27-26 27z" fill="var(--green)"/><path d="M9 32C16 24 22 18 30 11" stroke="var(--surface)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    نُقْلَة
+  </div>
+  <span class="badge">نموذج أولي تفاعلي</span>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>نُقْلَة</h1>
+    <p class="tag">من التعثر إلى التمكين</p>
+    <p class="lead">منصة واحدة تجمع الدعم النفسي والاجتماعي، واكتشاف المهارات بالذكاء الاصطناعي، والتدريب القصير، والربط بفرص عمل مرنة. كل ذلك في رحلة واحدة بدل خدمات متفرقة بين جهات كثيرة.</p>
+    <a class="cta" href="#demo" id="startBtn">ابدأ الرحلة التجريبية
+      <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <svg viewBox="0 0 520 360" role="img" aria-label="طريق يمتد نحو أفق المدينة وشمس الصباح">
+    <defs>
+      <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="var(--gold)" stop-opacity=".55"/><stop offset="1" stop-color="var(--gold)" stop-opacity="0"/></radialGradient>
+    </defs>
+    <circle cx="290" cy="140" r="130" fill="url(#sun)"/>
+    <circle cx="290" cy="140" r="62" fill="var(--gold)" fill-opacity=".28"/>
+    <g fill="var(--sage)" fill-opacity=".75">
+      <rect x="230" y="116" width="16" height="70"/><rect x="250" y="92" width="14" height="94"/>
+      <rect x="268" y="130" width="22" height="56"/><rect x="294" y="104" width="12" height="82"/>
+      <path d="M312 186V70c10 8 18 30 18 50v66z"/><rect x="334" y="122" width="20" height="64"/><rect x="358" y="140" width="16" height="46"/>
+    </g>
+    <path d="M0 250C70 190 150 200 230 230S420 200 520 170V360H0z" fill="var(--sage)" fill-opacity=".55"/>
+    <path d="M0 300C90 250 170 270 260 290S430 260 520 250V360H0z" fill="var(--green)" fill-opacity=".28"/>
+    <path d="M70 352C170 322 60 282 170 256S320 232 318 192" stroke="var(--green)" stroke-width="30" fill="none" stroke-linecap="round" opacity=".9"/>
+    <path class="road" d="M70 352C170 322 60 282 170 256S320 232 318 192" stroke="var(--surface)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M300 200l18-30 18 30" stroke="var(--gold)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</section>
+
+<section id="demo" class="console" aria-labelledby="demoTitle">
+  <div class="console-head">
+    <h2 id="demoTitle">جرّب رحلة المستفيد</h2>
+    <p>بيانات مثال جاهزة. غيّر أي قيمة وشاهد النتيجة تتغير مباشرة في المحطات التالية.</p>
+  </div>
+  <div class="rail-box"><ol class="rail" id="rail"></ol></div>
+  <div class="stage" id="stage" aria-live="polite"></div>
+  <div class="nav">
+    <button class="btn" id="prev">السابق</button>
+    <button class="btn primary" id="next">التالي</button>
+  </div>
+</section>
+
+<section class="pitch">
+  <div class="two">
+    <div class="p-card"><h3>المشكلة</h3><p>يواجه كثيرون صعوبة في استعادة الاستقرار بعد الأزمات أو التغيرات الحياتية. تتداخل الضغوط النفسية مع ضعف الثقة، وعدم معرفة المهارات القابلة للتوظيف، وصعوبة إيجاد عمل يناسب الظروف الأسرية. والخدمات موزعة بين جهات متعددة، فتصبح الرحلة مرهقة.</p></div>
+    <div class="p-card"><h3>الحل</h3><p>رحلة متكاملة تبدأ بتقييم الاحتياج النفسي والاجتماعي، ثم تحديد المهارات بالذكاء الاصطناعي، واقتراح تدريب قصير، وصولاً إلى فرصة عمل مرنة، مع مجتمع دعم آمن بإشراف أخصائيين اجتماعيين.</p></div>
+  </div>
+
+  <div>
+    <h2>المميزات التنافسية</h2>
+    <div class="feat">
+      <div><b>منظومة متكاملة</b><span>دعم نفسي واجتماعي وتدريب وتمكين اقتصادي في منصة واحدة.</span></div>
+      <div><b>مطابقة ذكية</b><span>تحليل مهارات المستفيد وربطها بالفرص الأنسب له.</span></div>
+      <div><b>مرونة</b><span>عمل عن بعد أو بدوام جزئي يراعي الظروف الأسرية والشخصية.</span></div>
+      <div><b>دعم مستمر</b><span>مجتمع آمن لتبادل الخبرات بإشراف مختصين.</span></div>
+      <div><b>الخصوصية</b><span>حماية بيانات المستفيدين وسرية معلوماتهم.</span></div>
+      <div><b>التمكين بدل الاعتماد</b><span>بناء المهارات والقدرات للوصول إلى الاستقلال.</span></div>
+    </div>
+  </div>
+
+  <div class="two">
+    <div><h2>التقنية المستخدمة</h2>
+      <ul class="plain">
+        <li>الذكاء الاصطناعي وتحليل البيانات لمطابقة المهارات مع الفرص.</li>
+        <li>نظام توصية للمسارات التدريبية.</li>
+        <li>منصة رقمية للجلسات والمجتمعات الافتراضية.</li>
+        <li>لوحة متابعة لقياس تقدم المستفيد.</li>
+      </ul></div>
+    <div><h2>الأثر المتوقع</h2>
+      <ul class="plain">
+        <li>رفع الاستقرار النفسي والاجتماعي وتعزيز الثقة بالنفس.</li>
+        <li>تنمية المهارات وتسهيل الوصول إلى فرص العمل.</li>
+        <li>دعم الاستقلال الاقتصادي والمشاركة المجتمعية.</li>
+        <li>تحسين جودة حياة المستفيدين.</li>
+      </ul></div>
+  </div>
+
+  <div class="close">
+    <div class="brand">نُقْلَة</div>
+    <p>معاً نحول التحديات إلى فرص، والأفراد إلى قصص نجاح.</p>
+    <small>الفرص والجهات والأرقام في هذا النموذج أمثلة تجريبية، والتحليل يعمل بقواعد مبسطة تحاكي محرك المطابقة.</small>
+  </div>
+</section>
+
+</div>
+</div>
+
+<script>
+(function(){
+  document.documentElement.dir='rtl'; document.documentElement.lang='ar';
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  var AX=[{k:'org',n:'التنظيم'},{k:'com',n:'التواصل'},{k:'fin',n:'المالية'},{k:'cre',n:'الإبداع'},{k:'edu',n:'الرعاية والتعليم'}];
+  var AXN={org:'التنظيم',com:'التواصل',fin:'المالية',cre:'الإبداع',edu:'الرعاية والتعليم'};
+
+  var TASKS=[
+    {id:'t1',n:'إدارة ميزانية الأسرة',skill:'التخطيط المالي وضبط المصروفات',ax:{fin:3,org:1},course:{n:'أساسيات المحاسبة وجداول إكسل',h:12}},
+    {id:'t2',n:'تنظيم المناسبات العائلية',skill:'تنسيق الفعاليات وإدارة الموردين',ax:{org:2,com:2},course:{n:'تنسيق الفعاليات',h:8}},
+    {id:'t3',n:'رعاية الأطفال وكبار السن',skill:'الرعاية ودعم الفئات',ax:{edu:3,com:1},course:{n:'مساعد تعليمي للطفولة المبكرة',h:14}},
+    {id:'t4',n:'البيع من المنزل (طبخ، حلويات)',skill:'المبيعات وريادة الأعمال المنزلية',ax:{com:2,fin:1,cre:1},course:{n:'إدارة مشروع منزلي',h:9}},
+    {id:'t5',n:'متابعة معاملات الأسرة مع الجهات',skill:'المتابعة الإدارية وإنجاز المعاملات',ax:{org:3},course:{n:'الدعم الإداري عن بعد',h:10}},
+    {id:'t6',n:'الحرف اليدوية والتطريز',skill:'التصميم والحرف',ax:{cre:3},course:{n:'تسويق المنتجات اليدوية',h:6}},
+    {id:'t7',n:'مساعدة الأبناء في الدراسة',skill:'التدريس والمتابعة التعليمية',ax:{edu:3,com:1},course:{n:'أساسيات التدريس الخصوصي',h:8}},
+    {id:'t8',n:'إدارة حساب على وسائل التواصل',skill:'صناعة المحتوى والتسويق الرقمي',ax:{cre:2,com:2},course:{n:'التسويق عبر وسائل التواصل',h:10}},
+    {id:'t9',n:'التوفيق بين الأقارب وحل الخلافات',skill:'التواصل وحل النزاعات',ax:{com:3},course:{n:'مهارات خدمة العملاء',h:6}}
+  ];
+  var JOBS=[
+    {id:'j1',n:'منسق/ة خدمة عملاء',co:'شركة سحاب للخدمات',ax:{com:.9,org:.5},h:4,remote:true},
+    {id:'j2',n:'مساعد/ة إداري افتراضي',co:'مكتب إتقان',ax:{org:.9,com:.4,fin:.3},h:5,remote:true},
+    {id:'j3',n:'مساعد/ة محاسبة (دوام جزئي)',co:'مجموعة أفق',ax:{fin:.9,org:.5},h:4,remote:true},
+    {id:'j4',n:'منسق/ة محتوى رقمي',co:'استوديو غرسة',ax:{cre:.9,com:.6},h:3,remote:true},
+    {id:'j5',n:'مساعد/ة تعليمي',co:'حضانة بذور المستقبل',ax:{edu:.9,com:.4},h:5,remote:false},
+    {id:'j6',n:'منسق/ة فعاليات',co:'فعاليات رحاب',ax:{org:.8,com:.7,cre:.3},h:6,remote:false}
+  ];
+  var STEPS=['تقييم الاحتياجات','دعم نفسي واجتماعي','اكتشاف المهارات','تدريب قصير','مطابقة ذكية','فرصة عمل مرنة','متابعة ودعم'];
+
+  var S={step:0,stress:7,conf:3,support:4,fin:3,hours:4,remote:true,kids:true,tasks:['t1','t2','t3','t5'],job:null,booked:false};
+
+  function score(){return Math.round(((10-S.stress)*.3+S.conf*.3+S.support*.2+S.fin*.2)*10)}
+  function level(sc){
+    if(sc<40)return{n:'مرحلة الاحتواء',d:'الأولوية الآن للأمان النفسي واستعادة التوازن قبل أي خطوة مهنية.',c:'var(--gold)',tier:0};
+    if(sc<66)return{n:'مرحلة البناء',d:'استقرار مقبول. جاهز لبناء الثقة والمهارات بالتوازي مع الدعم.',c:'var(--green)',tier:1};
+    return{n:'مرحلة الانطلاق',d:'استقرار جيد. التركيز على التدريب والفرص مع دعم خفيف.',c:'var(--green)',tier:2};
+  }
+  function picked(){return TASKS.filter(function(t){return S.tasks.indexOf(t.id)>-1})}
+  function axSum(){var o={org:0,com:0,fin:0,cre:0,edu:0};picked().forEach(function(t){for(var k in t.ax)o[k]+=t.ax[k]});return o}
+  function userVec(){var s=axSum(),o={};for(var k in s)o[k]=Math.min(1,s[k]/6);return o}
+  function matchJob(j){
+    var u=userVec(),dot=0,a=0,b=0,k;
+    for(k in AXN){var x=u[k]||0,y=j.ax[k]||0;dot+=x*y;a+=x*x;b+=y*y}
+    var cos=(a&&b)?dot/Math.sqrt(a*b):0;
+    var sc=cos*100,notes=[];
+    if(j.h>S.hours){sc-=(j.h-S.hours)*5;notes.push('يزيد '+(j.h-S.hours)+' ساعة عن وقتك')}
+    if(S.remote&&!j.remote){sc-=25;notes.push('يحتاج حضوراً')}
+    sc=Math.max(15,Math.min(98,Math.round(sc)));
+    var why=Object.keys(j.ax).filter(function(k){return (u[k]||0)>0}).sort(function(p,q){return (u[q]*j.ax[q])-(u[p]*j.ax[p])}).slice(0,2).map(function(k){return AXN[k]});
+    return{j:j,sc:sc,why:why,notes:notes};
+  }
+  function ranked(){return JOBS.map(matchJob).sort(function(a,b){return b.sc-a.sc})}
+  function curJob(){var r=ranked();return r.filter(function(x){return x.j.id===S.job})[0]||r[0]}
+
+  var ICON={
+    heart:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/></svg>',
+    users:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.200"/><path d="M3 20c0-3.300 2.700-5.500 6-5.500s6 2.200 6 5.500"/><path d="M16 5a3 3 0 0 1 0 6M18 14.800c1.800.8 3 2.500 3 5.200"/></svg>',
+    leaf:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19C5 10 10 5 20 4c0 9-5 15-15 15z"/><path d="M5 19c3-4 6-7 10-10"/></svg>',
+    cap:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.500V16c3 2.300 9 2.300 12 0v-4.500"/></svg>',
+    check:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7"/></svg>'
+  };
+
+  var rail=$('#rail'),stage=$('#stage');
+  rail.innerHTML=STEPS.map(function(n,i){return '<li><button type="button" data-i="'+i+'"><span class="dot num">'+(i+1)+'</span><span>'+n+'</span></button></li>'}).join('');
+  rail.addEventListener('click',function(e){var b=e.target.closest('button[data-i]');if(b)go(+b.dataset.i,true)});
+  $('#prev').onclick=function(){go(S.step-1)};
+  $('#next').onclick=function(){if(S.step===6){go(0,true)}else go(S.step+1)};
+
+  function head(i,t,sub){return '<div class="stage-k num">المحطة '+(i+1)+' من 7</div><h3>'+t+'</h3><p class="sub">'+sub+'</p>'}
+
+  function tween(from,to,ms,fn){
+    var t0=null;function f(t){if(t0===null)t0=t;var p=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-p,3);fn(from.map(function(v,i){return v+(to[i]-v)*e}));if(p<1)requestAnimationFrame(f)}
+    requestAnimationFrame(f);
+  }
+
+  /* ---------- step 0 ---------- */
+  function s0(){
+    var h=head(0,'تقييم سريع للاحتياج والوضع الحالي','أربعة أسئلة قصيرة تحدد مؤشر الاستقرار وتبني عليه بقية الرحلة.');
+    function sl(id,l,v){return '<div class="field"><div class="field-top"><label for="'+id+'">'+l+'</label><b class="num" id="'+id+'V">'+v+'</b></div><input type="range" id="'+id+'" min="0" max="10" step="1" value="'+v+'"></div>'}
+    return h+'<div class="cols"><div>'+
+      sl('stress','مستوى الضغط النفسي',S.stress)+sl('conf','الثقة بالنفس',S.conf)+sl('support','الدعم الاجتماعي المتاح',S.support)+sl('fin','الاستقرار المادي',S.fin)+
+      '<div class="field"><div class="field-top"><span>الوقت المتاح للعمل يومياً</span></div><div class="seg" id="hrs">'+[2,4,6].map(function(x){return '<button type="button" data-h="'+x+'" aria-pressed="'+(S.hours===x)+'">'+x+' ساعات</button>'}).join('')+'</div></div>'+
+      '<div class="field"><div class="field-top"><span>ظروفي</span></div><div class="seg" id="cond"><button type="button" data-c="remote" aria-pressed="'+S.remote+'">أحتاج عملاً عن بعد</button><button type="button" data-c="kids" aria-pressed="'+S.kids+'">أرعى أبناءً</button></div></div>'+
+      '</div><div class="gauge-box"><svg class="gauge" viewBox="0 0 140 140" role="img" aria-label="مؤشر الاستقرار"><circle class="trk" cx="70" cy="70" r="56" fill="none" stroke-width="12"/><circle class="val" id="gv" cx="70" cy="70" r="56" fill="none" stroke-width="12" stroke-linecap="round" transform="rotate(-90 70 70)" stroke-dasharray="351.9" stroke-dashoffset="351.9"/><text id="gn" x="70" y="76" text-anchor="middle" font-size="36" font-weight="700" class="num">0</text><text x="70" y="96" text-anchor="middle" font-size="10" fill="var(--muted)" style="fill:var(--muted)">من 100</text></svg><div class="lv" id="gl"></div><p id="gd"></p></div></div>';
+  }
+  function s0b(){
+    function upd(){
+      var sc=score(),lv=level(sc);
+      $('#gv').style.strokeDashoffset=351.9*(1-sc/100);$('#gv').style.stroke=lv.c;
+      $('#gn').textContent=sc;$('#gl').textContent=lv.n;$('#gd').textContent=lv.d;
+    }
+    ['stress','conf','support','fin'].forEach(function(id){
+      $('#'+id).oninput=function(){S[id]=+this.value;$('#'+id+'V').textContent=this.value;upd()};
+    });
+    $('#hrs').onclick=function(e){var b=e.target.closest('button');if(!b)return;S.hours=+b.dataset.h;$$('button',this).forEach(function(x){x.setAttribute('aria-pressed',x===b)})};
+    $('#cond').onclick=function(e){var b=e.target.closest('button');if(!b)return;var k=b.dataset.c;S[k]=!S[k];b.setAttribute('aria-pressed',S[k])};
+    setTimeout(upd,60);
+  }
+
+  /* ---------- step 1 ---------- */
+  function s1(){
+    var sc=score(),lv=level(sc),urgent=S.stress>=7&&S.support<=4;
+    var plans=[
+      [['heart','جلستان فرديتان أسبوعياً','مع أخصائية أو أخصائي اجتماعي لبناء الأمان والثقة.'],['users','مجموعة دعم أسبوعية','مجتمع صغير مغلق لتبادل التجارب والقصص الناجحة.'],['leaf','برنامج إدارة التوتر','تمارين قصيرة يومية داخل المنصة.']],
+      [['heart','جلسة فردية أسبوعياً','متابعة التقدم ومعالجة العقبات.'],['users','مجموعة دعم أسبوعية','تبادل الدعم والفرص بين الأقران.'],['leaf','برنامج بناء الثقة','أهداف صغيرة قابلة للقياس.']],
+      [['heart','جلسة كل أسبوعين','للمراجعة والتوجيه.'],['users','مجتمع الأقران','مشاركة الخبرات وتقديم الدعم لغيرك.'],['leaf','خطة الاستدامة','ضمان بقاء الاستقرار على المدى الطويل.']]
+    ][lv.tier];
+    var h=head(1,'خطة دعم تناسب مرحلتك','تُبنى الخطة من مؤشر الاستقرار الذي ظهر في المحطة الأولى.');
+    return h+'<div class="cols"><div><ul class="list">'+plans.map(function(p){return '<li class="item"><span class="ic">'+ICON[p[0]]+'</span><div><b>'+p[1]+'</b><span class="s">'+p[2]+'</span></div></li>'}).join('')+'</ul></div>'+
+      '<div><div class="card"><div class="note">مؤشر الاستقرار</div><div style="font-size:30px;font-weight:700;color:var(--green)" class="num">'+sc+' <span style="font-size:16px;font-weight:500;color:var(--muted)">· '+lv.n+'</span></div>'+
+      '<button type="button" class="btn primary" id="book" style="margin-top:12px;width:100%">'+(S.booked?'تم حجز الجلسة الأولى':'حجز أول جلسة')+'</button><p class="note" style="margin-top:8px" id="bookNote">'+(S.booked?'الأحد القادم، 8:00 مساءً (مثال تجريبي)':'الجلسات عن بعد وبسرية كاملة.')+'</p></div>'+
+      (urgent?'<div class="alert"><b>تنبيه للأخصائي:</b> الضغط مرتفع والدعم المتاح قليل. يظهر هذا الملف في أعلى قائمة الأخصائي للتواصل خلال 48 ساعة.</div>':'<div class="alert" style="border-color:var(--line)"><b style="color:var(--green)">للأخصائي:</b> لا توجد مؤشرات أولوية عاجلة في هذا الملف.</div>')+
+      '</div></div>';
+  }
+  function s1b(){
+    $('#book').onclick=function(){S.booked=!S.booked;this.textContent=S.booked?'تم حجز الجلسة الأولى':'حجز أول جلسة';$('#bookNote').textContent=S.booked?'الأحد القادم، 8:00 مساءً (مثال تجريبي)':'الجلسات عن بعد وبسرية كاملة.'};
+  }
+
+  /* ---------- step 2 ---------- */
+  function radarSvg(){
+    var cx=150,cy=140,R=92,n=5,g='';
+    function pt(i,r){var a=-Math.PI/2-i*2*Math.PI/n;return[cx+Math.cos(a)*r,cy+Math.sin(a)*r]}
+    [.33,.66,1].forEach(function(f){g+='<polygon class="web" points="'+AX.map(function(_,i){return pt(i,R*f).join(',')}).join(' ')+'"/>'});
+    AX.forEach(function(_,i){var p=pt(i,R);g+='<line class="web" x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'"/>'});
+    var lab=AX.map(function(a,i){var p=pt(i,R+16);return '<text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="middle">'+a.n+'</text>'}).join('');
+    return '<svg class="radar" viewBox="0 0 300 285" role="img" aria-label="بصمة المهارات">'+g+'<polygon class="shape" id="rshape" points=""/><g id="rpts"></g>'+lab+'</svg>';
+  }
+  var radarCur=[.08,.08,.08,.08,.08];
+  function drawRadar(vals){
+    var cx=150,cy=140,R=92;
+    var pts=vals.map(function(v,i){var a=-Math.PI/2-i*2*Math.PI/5,r=R*v;return[cx+Math.cos(a)*r,cy+Math.sin(a)*r]});
+    var sh=$('#rshape');if(!sh)return;
+    sh.setAttribute('points',pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' '));
+    $('#rpts').innerHTML=pts.map(function(p){return '<circle class="pt" cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="4"/>'}).join('');
+  }
+  function targetRadar(){var u=userVec();return AX.map(function(a){return Math.max(.08,u[a.k])})}
+  function updRadar(){var to=targetRadar(),from=radarCur.slice();radarCur=to;tween(from,to,500,drawRadar)}
+  function trList(){
+    var p=picked();
+    if(!p.length)return '<p class="note">اختر نشاطاً واحداً على الأقل لترى كيف يُترجم إلى مهارة.</p>';
+    return p.map(function(t){return '<div class="tr"><span class="from">'+t.n+'</span><span class="ar">←</span><span class="to">'+t.skill+'</span></div>'}).join('');
+  }
+  function s2(){
+    var h=head(2,'مترجم المهارات الخفية','كثير من الخبرة تأتي من الحياة اليومية. اختر ما قمت به فعلاً، وتحوله المنصة إلى مهارات مهنية يفهمها أصحاب العمل.');
+    return h+'<div class="cols"><div><div class="chips" id="chips">'+TASKS.map(function(t){return '<button type="button" class="chip" data-t="'+t.id+'" aria-pressed="'+(S.tasks.indexOf(t.id)>-1)+'">'+t.n+'</button>'}).join('')+'</div><div style="margin-top:18px" id="trs">'+trList()+'</div></div>'+
+      '<div class="card"><div class="note" style="text-align:center">بصمة مهاراتك</div>'+radarSvg()+'</div></div>';
+  }
+  function s2b(){
+    drawRadar(radarCur);
+    $('#chips').onclick=function(e){
+      var b=e.target.closest('button');if(!b)return;var id=b.dataset.t,i=S.tasks.indexOf(id);
+      if(i>-1)S.tasks.splice(i,1);else S.tasks.push(id);
+      b.setAttribute('aria-pressed',i===-1);$('#trs').innerHTML=trList();updRadar();
+    };
+    radarCur=[.08,.08,.08,.08,.08];drawRadar(radarCur);updRadar();
+  }
+
+  /* ---------- step 3 ---------- */
+  function topCourses(){
+    var p=picked().slice().sort(function(a,b){return a.course.h-b.course.h});
+    return p.slice(0,4);
+  }
+  function s3(){
+    var cs=topCourses(),tot=cs.reduce(function(s,t){return s+t.course.h},0),per=S.hours*5,wk=Math.max(1,Math.ceil(tot/per));
+    var h=head(3,'مسار تدريبي قصير','دورات قصيرة مبنية على المهارات التي اكتشفتها، موزعة على وقتك المتاح.');
+    if(!cs.length)return h+'<p class="note" style="margin-top:18px">ارجع إلى المحطة الثالثة واختر نشاطاً واحداً على الأقل.</p>';
+    return h+'<div class="cols"><div><ul class="list">'+cs.map(function(t,i){return '<li class="item"><span class="ic num">'+(i+1)+'</span><div style="flex:1;min-width:0"><div class="course"><b>'+t.course.n+'</b><span class="pill num">'+t.course.h+' ساعة</span></div><span class="s">لتقوية مهارة: '+t.skill+'</span></div></li>'}).join('')+'</ul></div>'+
+      '<div class="card"><div class="note">إجمالي المسار</div><div style="font-size:30px;font-weight:700;color:var(--green)" class="num">'+tot+' ساعة</div>'+
+      '<div class="seg-bar" aria-hidden="true">'+cs.map(function(t){return '<i style="flex:'+t.course.h+'"></i>'}).join('')+'</div>'+
+      '<p>تنتهي خلال <b class="num">'+wk+'</b> '+(wk<=2?'أسبوع':'أسابيع')+' بمعدل <span class="num">'+S.hours+'</span> ساعات يومياً، 5 أيام في الأسبوع.</p>'+
+      '<p class="note" style="margin-top:6px">يمكن التعلم في أوقات تناسب رعاية الأبناء.</p></div></div>';
+  }
+
+  /* ---------- step 4 ---------- */
+  function jobCard(m,on){
+    var j=m.j;
+    return '<button type="button" class="job" data-j="'+j.id+'" aria-pressed="'+on+'"><div class="job-top"><div><b>'+j.n+'</b><small>'+j.co+' · فرصة تجريبية</small></div><div class="pct num">'+m.sc+'%</div></div><div class="bar"><i data-w="'+m.sc+'"></i></div><div class="tags">'+
+      (m.why.length?'<span class="pill hl">يطابق: '+m.why.join('، ')+'</span>':'')+
+      '<span class="pill num">'+j.h+' ساعات</span><span class="pill">'+(j.remote?'عن بعد':'حضوري')+'</span>'+
+      m.notes.map(function(x){return '<span class="pill bad">'+x+'</span>'}).join('')+'</div></button>';
+  }
+  function s4(){
+    var r=ranked(),cur=curJob().j.id;
+    var h=head(4,'المطابقة الذكية','يقارن المحرك بصمة مهاراتك بمتطلبات كل فرصة، ثم يخصم ما يخالف ظروفك من وقت وحضور.');
+    return h+'<div class="jobs-grid jobs" id="jobs">'+r.map(function(m){return jobCard(m,m.j.id===cur)}).join('')+'</div>';
+  }
+  function s4b(){
+    $('#jobs').onclick=function(e){var b=e.target.closest('.job');if(!b)return;S.job=b.dataset.j;$$('.job',this).forEach(function(x){x.setAttribute('aria-pressed',x===b)})};
+    setTimeout(function(){$$('.bar i').forEach(function(i){i.style.width=i.dataset.w+'%'})},80);
+  }
+
+  /* ---------- step 5 ---------- */
+  function s5(){
+    var m=curJob(),j=m.j,sc=score();
+    var h=head(5,'فرصة عمل مرنة وملف جاهز','أنشأت المنصة ملفاً مهنياً من خبراتك اليومية، ويمكن إرساله مباشرة.');
+    var sk=picked().map(function(t){return '<li>'+t.skill+'</li>'}).join('')||'<li>لم تُحدد مهارات بعد</li>';
+    var cs=topCourses().map(function(t){return '<li>'+t.course.n+'</li>'}).join('')||'<li>لا يوجد</li>';
+    return h+'<div class="cols"><div class="cv"><h4>الملف المهني (تجريبي)</h4><div class="note">مُولَّد من نشاطات الحياة اليومية</div><h5>المهارات</h5><ul>'+sk+'</ul><h5>الدورات المخطط لها</h5><ul>'+cs+'</ul><h5>التوافر</h5><ul><li class="num">'+S.hours+' ساعات يومياً</li><li>'+(S.remote?'عن بعد فقط':'عن بعد أو حضوري')+'</li></ul></div>'+
+      '<div><div class="card"><div class="note">الفرصة المختارة</div><div style="font-size:20px;font-weight:700;margin-top:2px">'+j.n+'</div><div class="note">'+j.co+' · مطابقة <span class="num">'+m.sc+'%</span></div>'+
+      '<button type="button" class="btn primary" id="apply" style="margin-top:12px;width:100%">إرسال الملف للتقديم</button><p class="note" id="applyNote" style="margin-top:8px">لا يظهر لصاحب العمل أي بيان نفسي أو اجتماعي.</p></div>'+
+      '<ul class="list" style="margin-top:12px"><li class="item"><span class="ic">'+ICON.check+'</span><div><b>الأسبوع الأول</b><span class="s">مقابلة قصيرة عن بعد وتجربة عملية لمدة يومين.</span></div></li><li class="item"><span class="ic">'+ICON.heart+'</span><div><b>دعم مرافق</b><span class="s">اتصال أسبوعي من الأخصائي في أول شهر عمل.</span></div></li></ul></div></div>';
+  }
+  function s5b(){
+    $('#apply').onclick=function(){this.textContent='تم الإرسال';this.disabled=true;$('#applyNote').textContent='سيصلك إشعار بموعد المقابلة (مثال تجريبي).'};
+  }
+
+  /* ---------- step 6 ---------- */
+  function s6(){
+    var s0v=score(),tgt=Math.min(92,s0v+42),W=560,H=250,pl=34,pr=18,pt=18,pb=34;
+    var wk=[0,2,4,6,8,10,12];
+    function X(w){return W-pr-(w/12)*(W-pl-pr)}
+    function Y(v){return pt+(1-v/100)*(H-pt-pb)}
+    var vals=wk.map(function(w){var p=w/12,e=1-Math.pow(1-p,2);return Math.round(s0v+(tgt-s0v)*e)});
+    var d=wk.map(function(w,i){return (i?'L':'M')+X(w).toFixed(1)+' '+Y(vals[i]).toFixed(1)}).join(' ');
+    var area=d+' L'+X(12).toFixed(1)+' '+Y(0)+' L'+X(0).toFixed(1)+' '+Y(0)+' Z';
+    var grid=[0,25,50,75,100].map(function(v){return '<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'"/><text x="'+(pl-6)+'" y="'+(Y(v)+4)+'" text-anchor="end" class="num">'+v+'</text>'}).join('');
+    var xl=wk.map(function(w){return '<text x="'+X(w)+'" y="'+(H-12)+'" text-anchor="middle" class="num">'+w+'</text>'}).join('');
+    var ms=[[2,'أول جلسة'],[5,'أول دورة'],[8,'أول مقابلة'],[11,'أول دخل']];
+    var mk=ms.map(function(m){var w=m[0],v=s0v+(tgt-s0v)*(1-Math.pow(1-w/12,2));return '<circle cx="'+X(w).toFixed(1)+'" cy="'+Y(v).toFixed(1)+'" r="5" fill="var(--gold)" stroke="var(--surface)" stroke-width="2"/><text x="'+X(w).toFixed(1)+'" y="'+(Y(v)-12).toFixed(1)+'" text-anchor="middle" style="fill:var(--ink)">'+m[1]+'</text>'}).join('');
+    var h=head(6,'لوحة المتابعة','تتابع المنصة تقدمك أسبوعاً بأسبوع، ويرى الأخصائي التغير في المؤشر. الأرقام هنا توقع تجريبي مبني على بياناتك.');
+    return h+'<div style="margin-top:14px"><svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="توقع تطور مؤشر الاستقرار خلال 12 أسبوعاً">'+grid+xl+'<text x="'+(W-pr)+'" y="'+(H-0)+'" text-anchor="end">الأسبوع</text><path class="area" d="'+area+'"/><path class="ln" pathLength="1" d="'+d+'"/>'+mk+'</svg></div>'+
+      '<div class="kpis"><div class="kpi"><b class="num">'+s0v+' ← '+tgt+'</b><span>مؤشر الاستقرار بعد 12 أسبوعاً</span></div><div class="kpi"><b class="num">'+topCourses().length+'</b><span>دورات في المسار</span></div><div class="kpi"><b class="num">'+curJob().sc+'%</b><span>مطابقة الفرصة المختارة</span></div></div>';
+  }
+
+  var VIEWS=[[s0,s0b],[s1,s1b],[s2,s2b],[s3],[s4,s4b],[s5,s5b],[s6]];
+
+  function go(i,force){
+    if(i<0||i>6)return;
+    S.step=i;
+    $$('#rail li').forEach(function(li,k){li.className=k<i?'done':(k===i?'active':'')});
+    stage.style.animation='none';void stage.offsetWidth;stage.style.animation='';
+    stage.innerHTML=VIEWS[i][0]();
+    if(VIEWS[i][1])VIEWS[i][1]();
+    $('#prev').disabled=i===0;
+    $('#next').textContent=i===6?'إعادة التجربة':'التالي';
+    if(i>0){var li=$$('#rail li')[i],box=$('.rail-box'),a=li.getBoundingClientRect(),b=box.getBoundingClientRect();box.scrollLeft+=(a.left+a.width/2)-(b.left+b.width/2)}
+  }
+  go(0);
+})();
+</script>
+
+</body></html>
